@@ -597,5 +597,162 @@ document.querySelectorAll('.fade-in').forEach(f=>obs.observe(f));
 const sObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.animation='draw-string 3s ease forwards, string-pulse 4s 3.2s ease-in-out infinite';sObs.unobserve(e.target)}})},{threshold:0.2});
 document.querySelectorAll('.string-path').forEach(s=>sObs.observe(s));
 </script>
-</body>
+</body><!-- ══════════════════════════════════════════════════════ -->
+<!--  ARTEMIS CHARACTER PHOTOS — paste into index.html    -->
+<!--  Add this section just before the </body> tag        -->
+<!--  Or find the existing #characters section            -->
+<!--  and replace it with this.                           -->
+<!-- ══════════════════════════════════════════════════════ -->
+
+<style>
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.cast-card {
+  background: rgba(13,20,40,0.8);
+  border: 1px solid rgba(155,35,53,0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.2s;
+  cursor: default;
+}
+.cast-card:hover {
+  border-color: rgba(155,35,53,0.6);
+  transform: translateY(-4px);
+}
+.cast-img-wrap {
+  width: 100%;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  background: rgba(13,20,40,0.9);
+}
+.cast-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.cast-card:hover .cast-img { transform: scale(1.04); }
+.cast-info { padding: 14px 16px; }
+.cast-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #F0EDE8;
+  margin-bottom: 4px;
+}
+.cast-role {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+@media(max-width:900px){ .cast-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:500px){ .cast-grid { grid-template-columns: 1fr 1fr; gap: 8px; } }
+</style>
+
+<section id="characters" style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:100px 48px;">
+  <div style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:#C0392B;margin-bottom:16px;">The Cast</div>
+  <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,60px);font-weight:300;color:#F0EDE8;margin-bottom:12px;">
+    Meet the <em style="font-style:italic;color:#C4A96A">Characters</em>
+  </h2>
+
+  <div class="cast-grid">
+
+    <div class="cast-card fade-in">
+      <div class="cast-img-wrap">
+        <img src="artemis.png" alt="Artemis" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Artemis</div>
+        <div class="cast-role" style="color:#C4A96A">Golden Light · The Protagonist</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.05s">
+      <div class="cast-img-wrap">
+        <img src="aku.png" alt="Aku" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Aku</div>
+        <div class="cast-role" style="color:#8B6B3D">The Frequency · The Red String</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.1s">
+      <div class="cast-img-wrap">
+        <img src="kael.png" alt="Kael" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Kael</div>
+        <div class="cast-role" style="color:#4A6A8A">The Warrior · The Mountain</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.15s">
+      <div class="cast-img-wrap">
+        <img src="noxara.png" alt="Noxara" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Noxara</div>
+        <div class="cast-role" style="color:#9B6EE8">Blue-Violet · The Mirror</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.2s">
+      <div class="cast-img-wrap">
+        <img src="te.png" alt="Te" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Te</div>
+        <div class="cast-role" style="color:#3DBDB7">Teal Healing · The Anchor</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.25s">
+      <div class="cast-img-wrap">
+        <img src="savannah.png" alt="Savannah" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Savannah</div>
+        <div class="cast-role" style="color:#B87333">Kinetic Force · The Protector</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.3s">
+      <div class="cast-img-wrap">
+        <img src="luke.png" alt="Luke" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Luke</div>
+        <div class="cast-role" style="color:#6B9FD4">Silver-Blue · The Inventor</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.35s">
+      <div class="cast-img-wrap">
+        <img src="oryn.png" alt="Oryn" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Oryn</div>
+        <div class="cast-role" style="color:#C4A96A">Lavender-Gold · The Wise</div>
+      </div>
+    </div>
+
+    <div class="cast-card fade-in" style="transition-delay:0.4s">
+      <div class="cast-img-wrap">
+        <img src="corvyn.png" alt="Corvyn" class="cast-img">
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">Corvyn</div>
+        <div class="cast-role" style="color:#6B6BAA">Cold Indigo · High Lord</div>
+      </div>
+    </div>
+
+  </div>
+</section>
 </html>
