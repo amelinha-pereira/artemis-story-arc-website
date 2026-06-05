@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARTEMIS — An Original Series by Arcumo Studio</title>
+<meta name="description" content="Two lives tied by an invisible thread. A solarpunk world of breathtaking beauty and hidden corruption. Artemis — an original series by Arcumo Studio.">
+<meta property="og:title" content="ARTEMIS — An Original Series">
+<meta property="og:description" content="Two people. One thread. A solarpunk world hiding dangerous truths.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --void:#04060D;--obsidian:#080C18;--surface:#0D1428;
+  --gold:#C4A96A;--gold-light:#E8D5A3;--red:#9B2335;
+  --red-bright:#C0392B;--red-glow:rgba(155,35,53,0.3);
+  --teal:#3DBDB7;--bone:#F0EDE8;--ash:#7A7A88;
+  --border:rgba(196,169,106,0.1);--border-red:rgba(155,35,53,0.25);
+}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--bone);font-family:'Inter',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--obsidian)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:all 0.5s}
+nav.scrolled{background:rgba(4,6,13,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;letter-spacing:4px;color:var(--bone);text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--red-bright)}
+.nav-cta{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(196,169,106,0.3);padding:8px 20px;border-radius:1px;transition:all 0.3s}
+.nav-cta:hover{background:var(--gold);color:var(--obsidian)}
+#hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 120px;overflow:hidden}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none}
+.hero-orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(155,35,53,0.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:orb-breathe 5s ease-in-out infinite}
+.hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(196,169,106,0.05) 0%,transparent 70%);top:30%;right:10%;animation:orb-breathe 7s ease-in-out infinite reverse}
+@keyframes orb-breathe{0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+.hero-ring{position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:ring-expand 9s ease-out infinite;pointer-events:none}
+.hero-ring:nth-child(1){width:240px;height:240px;animation-delay:0s;border:1px solid rgba(155,35,53,0.4)}
+.hero-ring:nth-child(2){width:480px;height:480px;animation-delay:2.5s;border:1px solid rgba(155,35,53,0.25)}
+.hero-ring:nth-child(3){width:720px;height:720px;animation-delay:5s;border:1px solid rgba(155,35,53,0.12)}
+.hero-ring:nth-child(4){width:960px;height:960px;animation-delay:7s;border:1px solid rgba(155,35,53,0.05)}
+@keyframes ring-expand{0%{opacity:0;transform:translate(-50%,-50%) scale(0.85)}15%{opacity:1}70%{opacity:0.3}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05)}}
+.hero-studio{font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:40px;animation:fade-up 1s ease both}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--red-bright);margin-bottom:28px;animation:fade-up 1s 0.2s ease both}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(90px,16vw,200px);font-weight:300;line-height:0.9;letter-spacing:-4px;animation:fade-up 1s 0.3s ease both}
+.hero-title .tl{display:inline-block;color:var(--bone);animation:letter-pulse 4s ease-in-out infinite}
+.hero-title .tl:nth-child(1){animation-delay:0s}.hero-title .tl:nth-child(2){animation-delay:0.3s}.hero-title .tl:nth-child(3){animation-delay:0.6s}.hero-title .tl:nth-child(4){animation-delay:0.9s}.hero-title .tl:nth-child(5){animation-delay:1.2s}.hero-title .tl:nth-child(6){animation-delay:1.5s}.hero-title .tl:nth-child(7){animation-delay:1.8s}
+@keyframes letter-pulse{0%,100%{color:var(--bone);text-shadow:none}50%{color:#fff;text-shadow:0 0 60px rgba(155,35,53,0.5),0 0 100px rgba(155,35,53,0.2)}}
+.hero-string{display:block;width:100%;max-width:600px;margin:16px auto 0;animation:fade-up 1s 0.5s ease both}
+.string-path{stroke:var(--red);stroke-width:1.2;fill:none;stroke-dasharray:900;stroke-dashoffset:900;animation:draw-string 3s 1.2s ease forwards,string-pulse 4s 4.5s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(192,57,43,0.6))}
+@keyframes draw-string{to{stroke-dashoffset:0}}
+@keyframes string-pulse{0%,100%{opacity:0.7}50%{opacity:1;filter:drop-shadow(0 0 14px rgba(192,57,43,0.8))}}
+.hero-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(18px,2.5vw,26px);color:var(--gold);margin-top:32px;animation:fade-up 1s 0.7s ease both}
+.hero-sub{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--ash);margin-top:12px;margin-bottom:48px;animation:fade-up 1s 0.9s ease both}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;animation:fade-up 1s 1.1s ease both}
+.btn{display:inline-block;text-decoration:none;padding:14px 36px;font-size:10px;letter-spacing:3px;text-transform:uppercase;border-radius:1px;transition:all 0.3s;font-family:'Inter',sans-serif}
+.btn-red{background:var(--red);color:var(--bone);border:1px solid var(--red)}
+.btn-red:hover{background:var(--red-bright);border-color:var(--red-bright);box-shadow:0 0 30px var(--red-glow)}
+.btn-ghost{background:transparent;color:var(--bone);border:1px solid rgba(240,237,232,0.2)}
+.btn-ghost:hover{border-color:var(--bone)}
+.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:fade-up 1s 1.4s ease both}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--red),transparent);animation:scroll-breathe 2s ease-in-out infinite}
+@keyframes scroll-breathe{0%,100%{opacity:0.4}50%{opacity:1}}
+.scroll-text{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ash);opacity:0.5}
+.section{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:120px 48px}
+.divider{width:100%;height:1px;background:var(--border);position:relative;z-index:1}
+.divider-red{width:100%;height:1px;background:var(--border-red);position:relative;z-index:1}
+.section-label{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--red-bright);margin-bottom:16px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:300;line-height:1.1;color:var(--bone);margin-bottom:16px}
+.section-title em{font-style:italic;color:var(--gold)}
+.section-intro{color:var(--ash);max-width:560px;font-size:14px;line-height:1.9}
+.fade-in{opacity:0;transform:translateY(28px);transition:opacity 0.9s ease,transform 0.9s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.premise-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:64px}
+.premise-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,2.5vw,34px);font-weight:300;font-style:italic;line-height:1.6;color:var(--bone);border-left:2px solid var(--red);padding-left:32px}
+.premise-quote span{color:var(--red-bright)}
+.premise-body p{font-size:14px;color:var(--ash);line-height:1.9}
+.premise-body p+p{margin-top:20px}
+.premise-body strong{color:var(--bone);font-weight:500}
+.string-divider{position:relative;z-index:1;padding:80px 48px;text-align:center;overflow:hidden}
+.string-divider-svg{display:block;width:100%;max-width:900px;margin:0 auto}
+.sdiv-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(18px,2.8vw,34px);color:var(--bone);margin-top:32px;line-height:1.5}
+.sdiv-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--red-bright);margin-top:12px}
+.themes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:64px}
+.theme-card{padding:48px 32px;background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color 0.4s}
+.theme-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease}
+.theme-card:hover::before{transform:scaleX(1)}
+.theme-card:hover{border-color:var(--border-red)}
+.theme-icon{font-size:32px;margin-bottom:24px;display:block}
+.theme-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--bone);margin-bottom:12px;line-height:1.2}
+.theme-desc{font-size:13px;color:var(--ash);line-height:1.8}
+.journey-wrap{position:relative;padding:120px 48px;z-index:1;background:linear-gradient(to bottom,transparent,rgba(155,35,53,0.02),transparent)}
+.journey-inner{max-width:1200px;margin:0 auto}
+.journey-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:300;color:var(--bone);margin-bottom:12px;text-align:center}
+.journey-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--red-bright);text-align:center;margin-bottom:80px}
+.phases{display:flex;flex-direction:column;gap:0;position:relative}
+.phase{display:grid;grid-template-columns:1fr 64px 1fr;gap:0;align-items:start;padding:48px 0}
+.phase-cl{padding:0 40px}
+.phase-cr{padding:0 40px;padding-top:48px}
+.phase:nth-child(even) .phase-cl{order:3;text-align:left;padding-top:48px}
+.phase:nth-child(even) .phase-node{order:2}
+.phase:nth-child(even) .phase-cr{order:1;text-align:right;padding-top:0}
+.phase:nth-child(even) .phase-cr .phase-quote{border-left:none;border-right:1px solid var(--red);padding-left:0;padding-right:16px}
+.phase-node{display:flex;flex-direction:column;align-items:center;position:relative}
+.phase-dot{width:16px;height:16px;border-radius:50%;background:var(--red);box-shadow:0 0 20px var(--red-glow);position:relative;z-index:2;flex-shrink:0;animation:node-pulse 3s ease-in-out infinite}
+@keyframes node-pulse{0%,100%{box-shadow:0 0 10px var(--red-glow)}50%{box-shadow:0 0 30px var(--red-glow),0 0 60px rgba(155,35,53,0.3)}}
+.phase-line{width:1px;flex:1;min-height:48px;background:linear-gradient(to bottom,var(--red),rgba(155,35,53,0.15));margin:4px 0}
+.phase-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ash);letter-spacing:2px;margin-bottom:8px}
+.phase-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--bone);margin-bottom:4px;line-height:1.2}
+.phase-subtitle{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red-bright);margin-bottom:16px}
+.phase-body{font-size:13px;color:var(--ash);line-height:1.8}
+.phase-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--gold);margin-top:16px;border-left:1px solid var(--red);padding-left:16px;line-height:1.6}
+.worlds-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px}
+.world-card{padding:56px 40px;background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden;transition:all 0.4s}
+.world-card:hover{border-color:var(--border-red)}
+.world-card:hover .world-glow{opacity:1}
+.world-glow{position:absolute;inset:0;opacity:0;transition:opacity 0.5s;background:radial-gradient(circle at 50% 0%,rgba(155,35,53,0.06) 0%,transparent 60%)}
+.world-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ash);letter-spacing:2px;margin-bottom:24px}
+.world-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--bone);margin-bottom:8px;line-height:1.2}
+.world-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red-bright);margin-bottom:20px}
+.world-desc{font-size:13px;color:var(--ash);line-height:1.8}
+
+/* ── CHARACTER CARDS WITH PHOTOS ── */
+.chars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:64px}
+.char-card{background:var(--surface);border:1px solid var(--border);border-radius:1px;position:relative;overflow:hidden;transition:all 0.4s}
+.char-card:hover{border-color:var(--border-red);transform:translateY(-4px)}
+.char-card:hover .char-bar{opacity:1}
+.char-photo{width:100%;aspect-ratio:3/4;overflow:hidden;background:var(--obsidian)}
+.char-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform 0.4s}
+.char-card:hover .char-photo img{transform:scale(1.04)}
+.char-info{padding:20px 24px 24px}
+.char-bar{position:absolute;bottom:0;left:0;right:0;height:2px;opacity:0;transition:opacity 0.4s}
+.char-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--bone);margin-bottom:4px}
+.char-age{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ash);letter-spacing:2px;margin-bottom:10px}
+.char-role{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red-bright);margin-bottom:10px}
+.char-desc{font-size:12px;color:var(--ash);line-height:1.7}
+
+.arcumo-wrap{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:1}
+.arcumo-inner{max-width:1200px;margin:0 auto;padding:100px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.arcumo-shield{font-size:64px;margin-bottom:24px;display:block;animation:shield-float 3s ease-in-out infinite}
+@keyframes shield-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.arcumo-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;line-height:1.1;color:var(--bone);margin-bottom:20px}
+.arcumo-title em{color:var(--gold);font-style:italic}
+.arcumo-body{font-size:14px;color:var(--ash);line-height:1.9;margin-bottom:32px}
+.chapters{list-style:none;margin-bottom:40px}
+.chapters li{font-size:12px;color:var(--ash);padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.chapters li::before{content:'◈';color:var(--gold);font-size:8px}
+.chapters li:last-child{border-bottom:none}
+.arcumo-visual{position:relative;background:var(--obsidian);border:1px solid rgba(196,169,106,0.2);border-radius:2px;padding:56px 40px;overflow:hidden;text-align:center}
+.av-ring{position:absolute;border-radius:50%;border:1px solid rgba(196,169,106,0.1);top:50%;left:50%;transform:translate(-50%,-50%)}
+.av-ring:nth-child(1){width:160px;height:160px}
+.av-ring:nth-child(2){width:280px;height:280px;border-color:rgba(155,35,53,0.08)}
+.av-ring:nth-child(3){width:400px;height:400px;animation:spin-slow 25s linear infinite}
+.av-ring:nth-child(4){width:520px;height:520px;animation:spin-slow 40s linear infinite reverse}
+@keyframes spin-slow{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.av-content{position:relative;z-index:1}
+.av-logo{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:700;letter-spacing:6px;color:var(--bone);margin-bottom:6px}
+.av-logo span{color:var(--gold)}
+.av-sub{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--ash);margin-bottom:32px}
+.av-chapters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:20px}
+.av-ch{padding:10px 6px;background:rgba(196,169,106,0.05);border:1px solid var(--border);border-radius:1px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ash);letter-spacing:1px;text-align:center;transition:all 0.2s}
+.av-ch:hover{background:rgba(196,169,106,0.1);color:var(--gold);border-color:rgba(196,169,106,0.3)}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:64px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:4px;color:var(--bone);margin-bottom:6px}
+.footer-logo span{color:var(--gold)}
+.footer-series{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--red-bright);font-size:13px;margin-bottom:6px}
+.footer-credit{font-size:11px;color:var(--ash)}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-links a{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--red-bright)}
+@keyframes fade-up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1000px){
+  nav{padding:0 24px}nav ul{display:none}
+  .section{padding:80px 24px}
+  .premise-grid{grid-template-columns:1fr;gap:40px}
+  .themes-grid{grid-template-columns:1fr 1fr}
+  .worlds-grid{grid-template-columns:1fr}
+  .chars-grid{grid-template-columns:repeat(2,1fr)}
+  .arcumo-inner{grid-template-columns:1fr;gap:48px;padding:80px 24px}
+  .journey-wrap{padding:80px 24px}
+  .string-divider{padding:60px 24px}
+  footer{padding:48px 24px;flex-direction:column;align-items:flex-start}
+}
+@media(max-width:600px){
+  .themes-grid{grid-template-columns:1fr}
+  .chars-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .hero-btns{flex-direction:column;align-items:center}
+  .phase{grid-template-columns:1fr}
+  .phase-node{display:none}
+  .phase-cl,.phase-cr{padding:0;padding-bottom:24px;text-align:left!important;order:unset!important}
+  .phase-cr .phase-quote{border-left:1px solid var(--red)!important;border-right:none!important;padding-left:16px!important;padding-right:0!important}
+}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav id="nav">
+  <a href="https://arcumo-homepage.netlify.app/" class="nav-logo">ARC<span>U</span>MO</a>
+  <ul class="nav-links">
+    <li><a href="#premise">Story</a></li>
+    <li><a href="#string-journey">Red String</a></li>
+    <li><a href="#worlds">Worlds</a></li>
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="https://arcumo.netlify.app/">Arcumo App</a></li>
+  </ul>
+  <a href="https://arcumo.netlify.app/" class="nav-cta">Enter Arcumo →</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-ring"></div><div class="hero-ring"></div>
+  <div class="hero-ring"></div><div class="hero-ring"></div>
+  <div class="hero-studio">Arcumo Studio — Original Series</div>
+  <div class="hero-eyebrow">✦ The Red String ✦ &nbsp; Fantasy Drama · Solarpunk · Origin Story</div>
+  <h1 class="hero-title">
+    <span class="tl">A</span><span class="tl">R</span><span class="tl">T</span><span class="tl">E</span><span class="tl">M</span><span class="tl">I</span><span class="tl">S</span>
+  </h1>
+  <svg class="hero-string" viewBox="0 0 600 60" xmlns="http://www.w3.org/2000/svg">
+    <path class="string-path" d="M 0 30 C 60 10, 120 50, 180 30 C 240 10, 300 50, 360 30 C 420 10, 480 50, 540 30 C 560 22, 580 34, 600 30"/>
+    <circle cx="0" cy="30" r="4" fill="#9B2335" opacity="0.8"/>
+    <circle cx="300" cy="50" r="3" fill="#C4A96A" opacity="0.6"/>
+    <circle cx="600" cy="30" r="4" fill="#9B2335" opacity="0.8"/>
+  </svg>
+  <div class="hero-tagline">Two lives tied by an invisible thread.</div>
+  <p class="hero-sub">Born in different worlds · Destined to find each other · Lose each other · Find each other again</p>
+  <div class="hero-btns">
+    <a href="#premise" class="btn btn-red">Follow the Thread</a>
+    <a href="#string-journey" class="btn btn-ghost">Their Journey</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="premise" class="section fade-in">
+  <div class="section-label">The Story</div>
+  <div class="premise-grid">
+    <div>
+      <div class="premise-quote">
+        "The red string does not pull you together.<br>
+        It holds you steady while you<br>
+        <span>become who you were always meant to be</span> —<br>
+        so that when you finally return,<br>
+        you arrive not as two halves,<br>
+        but as two wholes."
+      </div>
+    </div>
+    <div class="premise-body">
+      <p>In a solarpunk world of breathtaking beauty and hidden corruption, there is an ancient belief: that certain people are tied together by a red string — invisible, unbreakable, spanning distance, time, and lifetimes.</p>
+      <p><strong>Artemis</strong> and <strong>Aku</strong> are two such people. When they meet, they know it instantly — not with their minds, but with something far older. A recognition that doesn't need explanation. A warmth that feels like memory.</p>
+      <p>But the universe has a way of separating those it has chosen. Before they can stay, they must each walk their own path — fulfilling their purpose, awakening their gifts, facing the darkness alone — so they can return to each other whole.</p>
+      <p>Every episode mirrors one chapter of the <strong>Arcumo</strong> platform — a story you're emotionally invested in, and a truth about yourself you didn't know you needed.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section fade-in">
+  <div class="section-label">At Its Heart</div>
+  <h2 class="section-title">Core <em>Themes</em></h2>
+  <div class="themes-grid">
+    <div class="theme-card fade-in"><span class="theme-icon">🧵</span><div class="theme-name">The Red String</div><div class="theme-desc">A connection that transcends time, distance, and silence. You feel it even when you cannot see it. It does not break. It stretches. And the tension is the story.</div></div>
+    <div class="theme-card fade-in" style="transition-delay:0.1s"><span class="theme-icon">⚡</span><div class="theme-name">Awakening & Purpose</div><div class="theme-desc">Both must grow alone before they can stand together. Separation is not abandonment — it is preparation. The gifts emerge when the path is walked, not when it is chosen.</div></div>
+    <div class="theme-card fade-in" style="transition-delay:0.2s"><span class="theme-icon">🌙</span><div class="theme-name">Telepathic Connection</div><div class="theme-desc">Music, visions, synchronicities, felt presences. The string communicates even across worlds. She sends him light through the city's veins. He sends her music through the frequency fields.</div></div>
+    <div class="theme-card fade-in" style="transition-delay:0.3s"><span class="theme-icon">☯</span><div class="theme-name">Light & Shadow</div><div class="theme-desc">Each carries what the other lacks. Together they are the balance the world is missing. The most complex character in the series is neither hero nor villain — but the wound that became one.</div></div>
+  </div>
+</section>
+
+<div class="string-divider">
+  <svg class="string-divider-svg" viewBox="0 0 900 80" xmlns="http://www.w3.org/2000/svg">
+    <defs><filter id="sglow"><feGaussianBlur stdDeviation="3" result="cb"/><feMerge><feMergeNode in="cb"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <path class="string-path" style="stroke-dasharray:1200;stroke-dashoffset:1200;animation-delay:0.3s" d="M 0 40 C 100 15,200 65,300 40 C 400 15,500 65,600 40 C 700 15,800 65,900 40" filter="url(#sglow)"/>
+    <circle cx="0" cy="40" r="5" fill="#9B2335" opacity="0.6"/>
+    <circle cx="450" cy="40" r="3" fill="#C4A96A" opacity="0.8"/>
+    <circle cx="900" cy="40" r="5" fill="#9B2335" opacity="0.6"/>
+  </svg>
+  <div class="sdiv-text fade-in">"This is not a love story with a beginning and an end.<br>It is a spiral — two people orbiting each other."</div>
+  <div class="sdiv-sub">The Red String Arc · Season 1</div>
+</div>
+
+<div id="string-journey" class="journey-wrap">
+  <div class="journey-inner">
+    <div class="section-label" style="text-align:center">Their Journey</div>
+    <h2 class="journey-title">The Red String Arc</h2>
+    <p class="journey-sub">Five Phases · Two Lives · One Thread</p>
+    <div class="phases">
+      <div class="phase fade-in">
+        <div class="phase-cl">
+          <div class="phase-num">Phase One</div>
+          <div class="phase-title">The First Meeting</div>
+          <div class="phase-subtitle">Recognition</div>
+          <div class="phase-body">Artemis arrives at the City of Lights carrying nothing but a compass and the ghost of a man who believed in her. When she meets Aku — musician, light-keeper, quiet revolutionary — the recognition is instant and wordless.</div>
+          <div class="phase-quote">"She didn't look like someone he had met. She looked like someone he had always known."</div>
+        </div>
+        <div class="phase-node"><div class="phase-dot"></div><div class="phase-line"></div></div>
+        <div class="phase-cr">
+          <div class="phase-body">Aku has lived in Imperia long enough to stop trusting what he feels. But when Artemis enters the room, something in his chest unlocks that he didn't know was locked. He hears a frequency he has never heard before — and realises he has been searching for it his whole life.</div>
+          <div class="phase-quote">"He felt the thread before he saw her face."</div>
+        </div>
+      </div>
+      <div class="phase fade-in">
+        <div class="phase-cl">
+          <div class="phase-num">Phase Two</div>
+          <div class="phase-title">The Knowing</div>
+          <div class="phase-subtitle">Recognition</div>
+          <div class="phase-body">It is not romance, not yet. It is something older. They find themselves finishing each other's thoughts, dreaming the same images. Artemis's light abilities respond to his music. His compositions shift when she is near.</div>
+          <div class="phase-quote">"It wasn't that they were the same. It was that they were the answer to each other's question."</div>
+        </div>
+        <div class="phase-node"><div class="phase-line"></div><div class="phase-dot"></div><div class="phase-line"></div></div>
+        <div class="phase-cr">
+          <div class="phase-body">Te sees it first. Savannah teases. Luke watches in quiet awe as their combined energy causes the bioluminescent architecture of Imperia to pulse in patterns not seen in centuries.</div>
+          <div class="phase-quote">"Together, the city lit up like it was remembering something."</div>
+        </div>
+      </div>
+      <div class="phase fade-in">
+        <div class="phase-cl">
+          <div class="phase-num">Phase Three</div>
+          <div class="phase-title">The Necessary Goodbye</div>
+          <div class="phase-subtitle">Separation</div>
+          <div class="phase-body">The Luminar Order discovers the connection. Aku, knowing this, chooses to leave. Not because he doesn't love her. Because he does.</div>
+          <div class="phase-quote">"He left so she could become what she was always meant to be."</div>
+        </div>
+        <div class="phase-node"><div class="phase-line"></div><div class="phase-dot"></div><div class="phase-line"></div></div>
+        <div class="phase-cr">
+          <div class="phase-body">The severance feels like a wound, a silence where there was music. But the red string doesn't break. She feels him everywhere. In songs. In dreams. In the gold of her own hands.</div>
+          <div class="phase-quote">"She learned to carry the thread like a compass. It always pointed the same direction."</div>
+        </div>
+      </div>
+      <div class="phase fade-in">
+        <div class="phase-cl">
+          <div class="phase-num">Phase Four</div>
+          <div class="phase-title">Across the Silence</div>
+          <div class="phase-subtitle">The Telepathic Thread</div>
+          <div class="phase-body">Artemis receives — not messages, but frequencies. A melody she somehow knows by heart. A flash of his hands on strings. She learns to send back: light through the city's veins, energy into the night sky.</div>
+          <div class="phase-quote">"She sent him light through the city's veins. He sent her music through the frequency fields. They never stopped talking."</div>
+        </div>
+        <div class="phase-node"><div class="phase-line"></div><div class="phase-dot"></div><div class="phase-line"></div></div>
+        <div class="phase-cr">
+          <div class="phase-body">Aku hears her in every composition he writes in exile. He has one recurring vision: the two of them standing on the bridge — this time, together. He doesn't know when. He knows it will happen.</div>
+          <div class="phase-quote">"The string was the silence. The silence was never empty."</div>
+        </div>
+      </div>
+      <div class="phase fade-in">
+        <div class="phase-cl">
+          <div class="phase-num">Phase Five</div>
+          <div class="phase-title">Coming Home Whole</div>
+          <div class="phase-subtitle">The Return</div>
+          <div class="phase-body">Artemis fully awakens her five gifts. In that moment, the city lights up completely — and she sees him. Not in a vision. In person. Standing exactly where she knew he would be.</div>
+          <div class="phase-quote">"She had become everything she was supposed to be. And then he was standing there."</div>
+        </div>
+        <div class="phase-node"><div class="phase-line"></div><div class="phase-dot" style="background:var(--gold);box-shadow:0 0 24px rgba(196,169,106,0.6)"></div></div>
+        <div class="phase-cr">
+          <div class="phase-body">He brings the music he composed across the separation — a piece that sounds exactly like the feeling of the red string. They recognise it immediately. Both of them wrote it. In different places. At the same time.</div>
+          <div class="phase-quote">"The music they made together was the sound of two completed people choosing each other."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-red"></div>
+
+<section id="worlds" class="section fade-in">
+  <div class="section-label">The Setting</div>
+  <h2 class="section-title">Three Worlds,<br><em>One Thread</em></h2>
+  <div class="worlds-grid">
+    <div class="world-card fade-in"><div class="world-glow"></div><div class="world-num">01 — Origin</div><div class="world-name">The Mountain Village</div><div class="world-tag">Past · Warmth · Constraint</div><div class="world-desc">Beautiful, isolated, loving — and too small for who she is. She doesn't leave in anger. She leaves in certainty. And for the first time in her life — it feels like freedom.</div></div>
+    <div class="world-card fade-in" style="transition-delay:0.1s"><div class="world-glow"></div><div class="world-num">02 — Belonging</div><div class="world-name">The Forest Haven</div><div class="world-tag">Present · Community · The Kiss</div><div class="world-desc">A beautiful solarpunk community where Artemis rests, belongs, and almost forgets her mission. Where she meets Aku. Where the red string makes itself known with one kiss.</div></div>
+    <div class="world-card fade-in" style="transition-delay:0.2s"><div class="world-glow" style="background:radial-gradient(circle at 50% 0%,rgba(61,189,183,0.06) 0%,transparent 60%)"></div><div class="world-num">03 — Destination</div><div class="world-name">Imperia</div><div class="world-tag">City of Lights · Truth · Power</div><div class="world-desc">A breathtaking solarpunk metropolis. Bioluminescent towers, floating solar rings, living architecture. Looks like paradise. Hides the truth about her mother, the Shadow Tribe, and the Luminar Order.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="characters" class="section fade-in">
+  <div class="section-label">The People</div>
+  <h2 class="section-title">The Cast</h2>
+  <div class="chars-grid">
+
+    <div class="char-card fade-in">
+      <div class="char-photo"><img src="artemis.png" alt="Artemis" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,var(--gold),var(--gold-light))"></div>
+        <div class="char-name">Artemis</div>
+        <div class="char-age">Early 20s</div>
+        <div class="char-role">Golden Light · The Protagonist</div>
+        <div class="char-desc">From hiding her gifts in a mountain village to leading with them. Her connection to Aku is the thread everything orbits.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.05s">
+      <div class="char-photo"><img src="aku.png" alt="Aku" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,#8B6B3D,var(--gold))"></div>
+        <div class="char-name">Aku</div>
+        <div class="char-age">Late 20s</div>
+        <div class="char-role">The Frequency · The Red String</div>
+        <div class="char-desc">Musician, light-keeper, quiet revolutionary. After one kiss — becomes the signal she can't turn off. He crosses the bridge to find her.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.1s">
+      <div class="char-photo"><img src="kael.png" alt="Kael" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,#2A4A6A,#4A6A8A)"></div>
+        <div class="char-name">Kael</div>
+        <div class="char-age">Early 30s</div>
+        <div class="char-role">The Warrior · The Mountain</div>
+        <div class="char-desc">Imperia's strongest protector. He believes only in what he can see and strike — until he witnesses something his fists cannot fix.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.15s">
+      <div class="char-photo"><img src="noxara.png" alt="Noxara" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,#6B4DA8,#9B6EE8)"></div>
+        <div class="char-name">Noxara</div>
+        <div class="char-age">Late 20s</div>
+        <div class="char-role">Blue-Violet Energy · The Mirror</div>
+        <div class="char-desc">Born the same day as Artemis. Not a villain — a wounded person who became one. She doesn't want to destroy her. She wants to be understood.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.2s">
+      <div class="char-photo"><img src="te.png" alt="Te" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,var(--teal),#A8E6E0)"></div>
+        <div class="char-name">Te</div>
+        <div class="char-age">30s</div>
+        <div class="char-role">Intuition · Emotional Anchor</div>
+        <div class="char-desc">Calm, wise, deeply intuitive. She sees the red string before Artemis names it. The grounding force that holds the team steady.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.25s">
+      <div class="char-photo"><img src="savannah.png" alt="Savannah" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,var(--red),#FF8080)"></div>
+        <div class="char-name">Savannah</div>
+        <div class="char-age">20s</div>
+        <div class="char-role">Kinetic Force · The Protector</div>
+        <div class="char-desc">Fierce, rebellious, loyal. Haunted by the cost of her own power. The one who protects with her body before her words.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.3s">
+      <div class="char-photo"><img src="luke.png" alt="Luke" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,#4080E8,#80B0FF)"></div>
+        <div class="char-name">Luke</div>
+        <div class="char-age">30s</div>
+        <div class="char-role">Light-Energy Tech · The Inventor</div>
+        <div class="char-desc">Gentle genius. He built the device that lets Artemis awaken the whole city. He built the vessel. She is the light.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.35s">
+      <div class="char-photo"><img src="oryn.png" alt="Oryn" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,var(--gold),white)"></div>
+        <div class="char-name">Oryn</div>
+        <div class="char-age">40s</div>
+        <div class="char-role">Lavender-Gold · The Wise</div>
+        <div class="char-desc">The first person who truly sees Artemis. Lives in solitude with his silver wolf. His death becomes the wound that sends her back onto her path.</div>
+      </div>
+    </div>
+
+    <div class="char-card fade-in" style="transition-delay:0.4s">
+      <div class="char-photo"><img src="corvyn.png" alt="Corvyn" loading="lazy"></div>
+      <div class="char-info">
+        <div class="char-bar" style="background:linear-gradient(to right,#2A1A4A,#6B4DA8)"></div>
+        <div class="char-name">Corvyn</div>
+        <div class="char-age">Ageless</div>
+        <div class="char-role">Cold Indigo · High Lord</div>
+        <div class="char-desc">High Lord of the Luminar Order. He genuinely loves Imperia — and genuinely believes that love requires absolute control. Calm. Elegant. Terrifying.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<div class="arcumo-wrap fade-in">
+  <div class="arcumo-inner">
+    <div>
+      <div class="section-label">The Connection</div>
+      <span class="arcumo-shield">🛡</span>
+      <h2 class="arcumo-title">Her map.<br><em>Your map.</em></h2>
+      <p class="arcumo-body">Every episode of Artemis ends with a real psychological insight from the Arcumo platform that mirrors what she just experienced. A story you're emotionally invested in — and a truth about yourself you didn't know you needed. Simultaneously.</p>
+      <ul class="chapters">
+        <li>27 chapters across three immersive learning environments</li>
+        <li>Ecopsychology, self-development, and identity</li>
+        <li>Daily practices, challenge gates, and AI tool guidance</li>
+        <li>Chapter 1 is free — the first map is always the map of yourself</li>
+      </ul>
+      <a href="https://arcumo.netlify.app/" target="_blank" class="btn btn-red">Enter Arcumo →</a>
+    </div>
+    <div class="arcumo-visual">
+      <div class="av-ring"></div><div class="av-ring"></div>
+      <div class="av-ring"></div><div class="av-ring"></div>
+      <div class="av-content">
+        <div class="av-logo">ARC<span>U</span>MO</div>
+        <div class="av-sub">27 Chapters · Self-Development</div>
+        <div class="av-chapters">
+          <div class="av-ch">Ch. 1<br>First Map</div>
+          <div class="av-ch">Ch. 3<br>Illusion</div>
+          <div class="av-ch">Ch. 7<br>Forge</div>
+          <div class="av-ch">Ch. 8<br>Growth</div>
+          <div class="av-ch">Ch. 9<br>Safety</div>
+          <div class="av-ch">Ch. 10<br>Wounds</div>
+          <div class="av-ch">Ch. 11<br>Boundary</div>
+          <div class="av-ch">Ch. 13<br>Compass</div>
+          <div class="av-ch">Ch. 14<br>Sixth Sense</div>
+          <div class="av-ch">Ch. 18<br>Summit</div>
+          <div class="av-ch">Ch. 27<br>Cosmic Law</div>
+          <div class="av-ch" style="color:var(--gold);border-color:rgba(196,169,106,0.3)">+ 16 more</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-logo">ARC<span>U</span>MO</div>
+    <div class="footer-series">Artemis — An Original Series</div>
+    <div class="footer-credit">Created by Maria Amelia Pereira · Arcumo Studio · Season 2 Coming</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://arcumo-homepage.netlify.app/">Studio</a>
+    <a href="https://arcumo.netlify.app/">Arcumo App</a>
+    <a href="https://pensight.com/x/homepage" target="_blank">Pensight</a>
+    <a href="https://www.instagram.com/arcumo_studio" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+<script>
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,particles=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+function mkP(){const r=Math.random()>0.6;return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.2,vy:-Math.random()*0.3-0.05,r:Math.random()*1.2+0.3,a:Math.random()*0.35+0.05,c:r?'rgba(155,35,53,':'rgba(196,169,106,'}}
+for(let i=0;i<60;i++)particles.push(mkP());
+function animP(){ctx.clearRect(0,0,W,H);particles.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;p.a-=0.0007;if(p.a<=0||p.y<0)particles[i]=mkP();ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c+p.a+')';ctx.fill()});requestAnimationFrame(animP)}
+animP();
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40));
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.08});
+document.querySelectorAll('.fade-in').forEach(f=>obs.observe(f));
+const sObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.animation='draw-string 3s ease forwards, string-pulse 4s 3.2s ease-in-out infinite';sObs.unobserve(e.target)}})},{threshold:0.2});
+document.querySelectorAll('.string-path').forEach(s=>sObs.observe(s));
+</script>
+</body>
+</html>
